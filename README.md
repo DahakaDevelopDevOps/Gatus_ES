@@ -1,2 +1,2 @@
 # Gatus_ES
-setting up of a gatus monitoring tool for EffectiveSoft websites
+settings of a Gatus monitoring tool for EffectiveSoft websites
