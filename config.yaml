@@ -1,17 +1,30 @@
-endpoints:
-  - name: Cloud Jira
-    group: atlassian
-    url: "https://effectivesoft.atlassian.net/jira"
-    interval: 60s
-    conditions:
-      - "[STATUS] == 200"
+alerting:
+  telegram:
+    token: "7345309315:AAHUO-ORb0Uv7DFI2pZGRRPYfV5npNZBqss"
+    chat-id: "-1002237411116"
 
-  - name: Cloud Wiki
-    group: atlassian
-    url: "https://effectivesoft.atlassian.net/wiki"
+endpoints:
+  - name: Atlassian Jira Software Status
+    url: "https://jira-software.status.atlassian.com/"
     interval: 60s
+    headers:
+     Cache-Control: "no-cache"
     conditions:
-      - "[STATUS] == 200"
+      - "[BODY] = 'All Systems Operational'"
+    alerts:
+      - type: telegram
+        send-on-resolved: true
+
+  - name: Atlassian Cloud Confluence
+    url: "https://status.atlassian.com/products/confluence"
+    interval: 60s
+    headers:
+     Cache-Control: "no-cache"
+    conditions:
+      - "[BODY].status.description == 'All Systems Operational'"
+    alerts:
+      - type: telegram
+        send-on-resolved: true
 
   - name: monitoring
     group: internal
@@ -19,58 +32,59 @@ endpoints:
     interval: 5m
     conditions:
       - "[STATUS] == 200"
+    alerts:
+      - type: telegram
+        send-on-resolved: true
 
   - name: Effective-soft BY website
     group: internal
     url: "https://www.effectivesoft.by/"
     interval: 5m
+    headers:
+     Cache-Control: "no-cache"
     conditions:
       - "[STATUS] == 200"
-      - "[CERTIFICATE_EXPIRATION] > 120h"
+      - "[TLS_VALID] == true"
+    alerts:
+      - type: telegram
+        send-on-resolved: true
 
   - name: Effective-soft PL website
     group: internal
     url: "https://www.effectivesoft.pl/"
     interval: 5m
+    headers:
+     Cache-Control: "no-cache"
     conditions:
       - "[STATUS] == 200"
-      - "[CERTIFICATE_EXPIRATION] > 120h"
+      - "[TLS_VALID] == true"
+    alerts:
+      - type: telegram
+        send-on-resolved: true
 
- - name: Google website
+  - name: Google website
     group: internal
     url: "https://www.google.com/"
     interval: 1m
+    headers:
+     Cache-Control: "no-cache"
     conditions:
       - "[STATUS] == 200"
       - "[CERTIFICATE_EXPIRATION] > 120h"
+    alerts:
+      - type: telegram
+        send-on-resolved: true
 
   - name: Effective-soft COM website
     group: internal
     url: "https://www.effectivesoft.com/"
     interval: 5m
+    headers:
+     Cache-Control: "no-cache"
     conditions:
       - "[STATUS] == 200"
-      - "[CERTIFICATE_EXPIRATION] > 120h"
-
-  - name: example-dns-query
-    url: "8.8.8.8" # Address of the DNS server to use
-    interval: 5m
-    dns:
-      query-name: "example.com"
-      query-type: "A"
-    conditions:
-      - "[BODY] == 93.184.215.14"
-      - "[DNS_RCODE] == NOERROR"
-
-  - name: icmp-ping
-    url: "icmp://example.org"
-    interval: 1m
-    conditions:
-      - "[CONNECTED] == true"
-
-  - name: check-domain-expiration
-    url: "https://example.org/"
-    interval: 1h
-    conditions:
-      - "[DOMAIN_EXPIRATION] > 720h"
+      - "[TLS_VALID] == true"
+    alerts:
+      - type: telegram
+        send-on-resolved: true
 
